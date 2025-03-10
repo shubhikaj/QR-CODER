@@ -1,0 +1,32 @@
+# Docker compose file for running the frontend, backend and nginx containers
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    container_name: qr-coder-frontend
+    networks:
+      - qr-coder-network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: qr-coder-backend
+    networks:
+      - qr-coder-network
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - qr-coder-network
+
+networks:
+  qr-coder-network:
+    driver: bridge
